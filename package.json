@@ -1,0 +1,69 @@
+{
+  "name": "vite-lib-template",
+  "description": "Typescript based project skeleton for javascript packages.",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "require": "./dist/index.d.cts",
+        "import": "./dist/index.d.ts",
+        "default": "./dist/index.d.ts"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "check": "eslint src",
+    "format:check": "prettier src --check",
+    "format": "prettier $(git diff --cached --name-only --diff-filter=ACMR src | sed 's| |\\\\ |g') --write --ignore-unknown",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "prepare": "husky",
+    "commit": "cz",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muratgozel/vite-lib-template.git"
+  },
+  "author": {
+    "name": "{{author_name}}",
+    "email": "{{author_email}}",
+    "url": "{{author_url}}"
+  },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "keywords": [],
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@microsoft/api-extractor": "^7.52.10",
+    "@types/node": "^24.2.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2",
+    "semantic-release": "^24.2.7",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1",
+    "unplugin-dts": "1.0.0-beta.0",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.4"
+  }
+}
