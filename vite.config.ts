@@ -1,8 +1,10 @@
 /// <reference types="vitest" />
 import path from "path";
-import { defineConfig } from "vite";
+import { defineConfig, type LibraryFormats } from "vite";
 import dts from "unplugin-dts/vite"
+import camelCase from "camelcase"
 import packageJson from "./package.json";
+import dtsToCjs from "./plugins/dts-to-cjs";
 
 const getPackageName = () => {
   return packageJson.name;
@@ -16,23 +18,28 @@ const getPackageNameCamelCase = () => {
   }
 };
 
-const fileName = {
-  es: `index.js`,
-  cjs: `index.cjs`,
-  iife: `index.iife.js`,
-};
+const generateFileName = (format: string, entryName: string) => {
+  let ext = 'js'
+  if (format == 'cjs') ext = 'cjs'
+  if (format == 'iife') ext = 'iife.js'
+  return `${entryName}.${ext}`
+}
 
-const formats = Object.keys(fileName) as Array<keyof typeof fileName>;
+const entries = [
+  path.resolve(__dirname, "src/index.ts"),
+  path.resolve(__dirname, "src/alt.ts")
+]
+const formats = (entries.length > 0 ? ['es', 'cjs'] : ['es', 'cjs', 'iife']) as LibraryFormats[];
 
 export default defineConfig({
   base: "./",
   build: {
     outDir: "./dist",
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: entries,
       name: getPackageNameCamelCase(),
       formats,
-      fileName: format => fileName[format],
+      fileName: generateFileName
     },
     /*rollupOptions: {
         external: ["vue"],
@@ -51,5 +58,17 @@ export default defineConfig({
         '@': path.resolve(import.meta.dirname, 'src')
     },
   },
-  plugins: [dts({ bundleTypes: true })]
+  plugins: [
+    dts({ bundleTypes: true }),
+    dtsToCjs({
+      outDir: 'dist', // Should match your DTS plugin outDir
+      pattern: '**/*.d.ts', // Optional: customize which files to convert
+      // Optional: custom namespace name generator
+      getNamespaceName: (fileName) => {
+        //const baseName = path.basename(fileName, '.d.ts');
+        const _name = packageJson.name.split('/').reverse()[0]
+        return camelCase(_name)
+      }
+    })
+  ]
 });

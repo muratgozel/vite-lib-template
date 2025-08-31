@@ -16,6 +16,16 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "default": "./dist/index.js"
+    },
+    "./alt": {
+      "types": {
+        "require": "./dist/alt.d.cts",
+        "import": "./dist/alt.d.ts",
+        "default": "./dist/alt.d.ts"
+      },
+      "import": "./dist/alt.js",
+      "require": "./dist/alt.cjs",
+      "default": "./dist/alt.js"
     }
   },
   "scripts": {
@@ -53,9 +63,11 @@
     "@eslint/js": "^9.33.0",
     "@microsoft/api-extractor": "^7.52.10",
     "@types/node": "^24.2.1",
+    "camelcase": "^8.0.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.33.0",
+    "glob": "^11.0.3",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
